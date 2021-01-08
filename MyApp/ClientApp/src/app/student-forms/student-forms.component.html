@@ -1,0 +1,50 @@
+<div class="container my-5">
+  <h2>Student Form #{{ formId }}</h2>
+
+  <div class="my-2">
+    <label
+      class="custom-file-upload btn-secondary"
+      (click)="fileInput.value = null"
+    >
+      Choose File
+      <input
+        #fileInput
+        type="file"
+        accept=".pdf"
+        (change)="chooseFile(fileInput.files)"
+      />
+    </label>
+  </div>
+
+  <div *ngIf="selectedFile">
+    <div class="d-flex justify-content-between flex-wrap bg-light text-primary">
+      <div>{{ selectedFile.name }}</div>
+      <div>{{ humanFileSize(selectedFile.size) }}</div>
+    </div>
+    <div *ngIf="uploading" class="mt-2">
+      <ngb-progressbar
+        type="success"
+        showValue="true"
+        [value]="uploadProgress"
+      ></ngb-progressbar>
+    </div>
+    <button
+      type="button"
+      class="btn btn-primary mt-2"
+      (click)="upload()"
+      [disabled]="uploading"
+    >
+      <span *ngIf="!uploading">Upload</span>
+      <span *ngIf="uploading"> Processing <loading-bar></loading-bar></span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMsg" class="text-danger">
+    {{ errorMsg }}
+  </div>
+
+  <div *ngIf="submissionResult" class="text-success">
+    <p class="font-weight-bold mb-0">File uploaded</p>
+    <pre>{{ submissionResult | json }}</pre>
+  </div>
+</div>
