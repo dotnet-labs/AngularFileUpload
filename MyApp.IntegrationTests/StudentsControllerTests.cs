@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,11 +19,11 @@ namespace MyApp.IntegrationTests
         public static void ClassInit(TestContext testContext)
         {
             Console.WriteLine(testContext.TestName);
-            _factory = new WebApplicationFactory<Startup>();
+            _factory = new WebApplicationFactory<Startup>().WithWebHostBuilder(builder => builder.UseSetting("https_port", "5001").UseEnvironment("Testing"));
         }
 
         [TestMethod]
-        public async Task ShouldReturnSuccessResponse()
+        public async Task ShouldReturnSuccessResponse_SingleFileForm()
         {
             var client = _factory.CreateClient();
 
@@ -47,7 +48,7 @@ namespace MyApp.IntegrationTests
         }
 
         [TestMethod]
-        public async Task ShouldReturnBadRequestIfFileFormatIsNotPdf()
+        public async Task ShouldReturnBadRequestIfFileFormatIsNotPdf_SingleFileForm()
         {
             var client = _factory.CreateClient();
 
@@ -69,6 +70,34 @@ namespace MyApp.IntegrationTests
             Assert.IsNull(response.Headers.Location?.AbsolutePath);
             var json = await response.Content.ReadAsStringAsync();
             Assert.AreEqual("\"The uploaded file StudentFile is not a PDF file.\"", json);
+        }
+
+        [TestMethod]
+        public async Task ShouldReturnSuccessResponse_MultipleFiles()
+        {
+            var client = _factory.CreateClient();
+
+            const string testFile1 = "test.pdf";
+            await File.WriteAllTextAsync(testFile1, "test1111");
+            const string testFile2 = "test2.txt";
+            await File.WriteAllTextAsync(testFile2, "test2222222");
+            const string testFile3 = "test3.xyz";
+            await File.WriteAllTextAsync(testFile3, "test33333333");
+
+            using var form = new MultipartFormDataContent();
+            using var fileContent1 = new ByteArrayContent(await File.ReadAllBytesAsync(testFile1));
+            using var fileContent2 = new ByteArrayContent(await File.ReadAllBytesAsync(testFile2));
+            using var fileContent3 = new ByteArrayContent(await File.ReadAllBytesAsync(testFile3));
+            form.Add(fileContent1, "certificates", Path.GetFileName(testFile1));
+            form.Add(fileContent2, "certificates", Path.GetFileName(testFile2));
+            form.Add(fileContent3, "certificates", Path.GetFileName(testFile3));
+
+            var response = await client.PostAsync("api/students/123/certificates", form);
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("application/json; charset=utf-8", response.Content.Headers.ContentType?.ToString());
+            var json = await response.Content.ReadAsStringAsync();
+            Assert.AreEqual("[{\"fileName\":\"test.pdf\",\"fileSize\":8},{\"fileName\":\"test2.txt\",\"fileSize\":11},{\"fileName\":\"test3.xyz\",\"fileSize\":12}]", json);
         }
 
         [ClassCleanup]

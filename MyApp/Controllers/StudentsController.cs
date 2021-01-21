@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Threading.Tasks;
@@ -65,6 +66,34 @@ namespace MyApp.Controllers
             var result = new StudentFormSubmissionResult { FormId = form.FormId, StudentId = id, FileSize = form.StudentFile.Length };
             return CreatedAtAction(nameof(ViewForm), new { id, form.FormId }, result);
         }
+
+        [HttpPost("{id:int}/certificates")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [RequestSizeLimit(long.MaxValue)]
+        public async Task<ActionResult<List<CertificateSubmissionResult>>> SubmitCertificates(int id, [Required] List<IFormFile> certificates)
+        {
+            var result = new List<CertificateSubmissionResult>();
+
+            if (certificates == null || certificates.Count == 0)
+            {
+                return BadRequest("No file is uploaded.");
+            }
+
+            foreach (var certificate in certificates)
+            {
+                var filePath = Path.Combine(@"App_Data", id.ToString(), @"Certificates", certificate.FileName);
+                new FileInfo(filePath).Directory?.Create();
+
+                await using var stream = new FileStream(filePath, FileMode.Create);
+                await certificate.CopyToAsync(stream);
+                _logger.LogInformation($"The uploaded file [{certificate.FileName}] is saved as [{filePath}].");
+
+                result.Add(new CertificateSubmissionResult { FileName = certificate.FileName, FileSize = certificate.Length });
+            }
+
+            return Ok(result);
+        }
     }
 
     public class StudentForm
@@ -78,6 +107,12 @@ namespace MyApp.Controllers
     {
         public int StudentId { get; set; }
         public int FormId { get; set; }
+        public long FileSize { get; set; }
+    }
+
+    public class CertificateSubmissionResult
+    {
+        public string FileName { get; set; }
         public long FileSize { get; set; }
     }
 }
