@@ -67,6 +67,12 @@ namespace MyApp.Controllers
             return CreatedAtAction(nameof(ViewForm), new { id, form.FormId }, result);
         }
 
+        /// <summary>
+        /// An Example API Endpoint Accepting Multiple Files
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="certificates"></param>
+        /// <returns></returns>
         [HttpPost("{id:int}/certificates")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
