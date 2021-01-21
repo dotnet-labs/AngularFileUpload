@@ -3,16 +3,19 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentFormsComponent } from './student-forms/student-forms.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { SpinnerModule } from '@uiowa/spinner';
 import { HttpClientModule } from '@angular/common/http';
 
+import { StudentFormsComponent } from './student-forms/student-forms.component';
+import { MultipleFilesUploadComponent } from './multiple-files-upload/multiple-files-upload.component';
+
 @NgModule({
   declarations: [
     AppComponent,
-    StudentFormsComponent
+    StudentFormsComponent,
+    MultipleFilesUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -20,9 +23,9 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     AppRoutingModule,
     SpinnerModule,
-    NgbModule
+    NgbModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

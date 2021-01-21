@@ -1,22 +1,25 @@
-<h2>Student Form #{{ formId }}</h2>
+<h2>Upload Multiple Files</h2>
 
 <div class="my-2">
   <label class="btn btn-secondary" (click)="fileInput.value = null">
-    Choose File
+    Choose Files
     <input
       #fileInput
       type="file"
-      accept=".pdf"
       style="display: none"
       (change)="chooseFile(fileInput.files)"
+      multiple
     />
   </label>
 </div>
 
-<div *ngIf="selectedFile">
-  <div class="d-flex justify-content-between flex-wrap bg-light text-primary">
-    <div>{{ selectedFile.name }}</div>
-    <div>{{ humanFileSize(selectedFile.size) }}</div>
+<div *ngIf="selectedFiles && selectedFiles.length">
+  <div
+    *ngFor="let item of selectedFiles"
+    class="d-flex justify-content-between flex-wrap bg-light text-primary"
+  >
+    <div>{{ item.name }}</div>
+    <div>{{ humanFileSize(item.size) }}</div>
   </div>
   <div *ngIf="uploading" class="mt-2">
     <ngb-progressbar
@@ -40,7 +43,7 @@
   {{ errorMsg }}
 </div>
 
-<div *ngIf="submissionResult" class="text-success">
+<div *ngIf="submissionResults && submissionResults.length" class="text-success">
   <p class="font-weight-bold mb-0">File uploaded</p>
-  <pre>{{ submissionResult | json }}</pre>
+  <pre>{{ submissionResults | json }}</pre>
 </div>
