@@ -100,6 +100,18 @@ namespace MyApp.IntegrationTests
             Assert.AreEqual("[{\"fileName\":\"test.pdf\",\"fileSize\":8},{\"fileName\":\"test2.txt\",\"fileSize\":11},{\"fileName\":\"test3.xyz\",\"fileSize\":12}]", json);
         }
 
+        [TestMethod]
+        public async Task ShouldDownloadFile()
+        {
+            var client = _factory.CreateClient();
+            var response = await client.GetAsync("api/students/files/1");
+
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual("text/plain", response.Content.Headers.ContentType?.ToString());
+            Assert.AreEqual("attachment; filename=1.txt; filename*=UTF-8''1.txt", response.Content.Headers.ContentDisposition?.ToString());
+            Assert.AreEqual("12", response.Content.Headers.ContentLength?.ToString());
+        }
+
         [ClassCleanup]
         public static void ClassCleanup()
         {

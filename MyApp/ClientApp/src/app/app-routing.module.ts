@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { FileDownloadComponent } from './file-download/file-download.component';
 import { MultipleFilesUploadComponent } from './multiple-files-upload/multiple-files-upload.component';
 import { StudentFormsComponent } from './student-forms/student-forms.component';
 
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'multi-files',
     component: MultipleFilesUploadComponent,
+  },
+  {
+    path: 'file-download',
+    component: FileDownloadComponent,
   },
 ];
 

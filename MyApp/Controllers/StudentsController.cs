@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
 
 namespace MyApp.Controllers
@@ -99,6 +100,27 @@ namespace MyApp.Controllers
             }
 
             return Ok(result);
+        }
+
+        [HttpGet("files/{id:int}")]
+        public async Task<ActionResult> DownloadFile(int id)
+        {
+            // validation and get the file
+
+            var filePath = $"{id}.txt";
+            if (!System.IO.File.Exists(filePath))
+            {
+                await System.IO.File.WriteAllTextAsync(filePath, "Hello World!");
+            }
+            
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            var bytes = await System.IO.File.ReadAllBytesAsync(filePath);
+            return File(bytes, contentType, Path.GetFileName(filePath));
         }
     }
 

@@ -10,12 +10,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { StudentFormsComponent } from './student-forms/student-forms.component';
 import { MultipleFilesUploadComponent } from './multiple-files-upload/multiple-files-upload.component';
+import { FileDownloadComponent } from './file-download/file-download.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StudentFormsComponent,
     MultipleFilesUploadComponent,
+    FileDownloadComponent,
   ],
   imports: [
     BrowserModule,
