@@ -1,4 +1,6 @@
-# Upload files from Angular to a .NET API endpoint
+# Upload/Download files with Angular and .NET Web API
+
+In this repository, you can find an Angular SPA, an ASP.NET Core Web API project, and its integration test project, for uploading/downloading files.
 
 ## Medium Articles
 
@@ -15,3 +17,9 @@
   In this article, we will go through details of creating an Angular component for uploading multiple files to a .NET Web API endpoint. The following screen recording shows the demo app.
 
   ![upload multiple files](./angular-upload-multiple-files.gif)
+
+- [Download Files using Web API](https://codeburst.io/download-files-using-web-api-ae1d1025f0a9)
+
+  In this article, I will use a demo Web API application in ASP.NET Core to show you how to transmit files through an API endpoint. In the final HTML page, end users can left-click a hyperlink to download the file or right-click the link to choose "Save Link As" in the context menu and save the file.
+
+  ![file downloading via web API](./saving-file-link.gif)
