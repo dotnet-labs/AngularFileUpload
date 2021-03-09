@@ -1,5 +1,7 @@
 # Upload/Download files with Angular and .NET Web API
 
+<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+
 In this repository, you can find an Angular SPA, an ASP.NET Core Web API project, and its integration test project, for uploading/downloading files.
 
 ## Medium Articles
@@ -23,3 +25,9 @@ In this repository, you can find an Angular SPA, an ASP.NET Core Web API project
   In this article, I will use a demo Web API application in ASP.NET Core to show you how to transmit files through an API endpoint. In the final HTML page, end users can left-click a hyperlink to download the file or right-click the link to choose "Save Link As" in the context menu and save the file.
 
   ![file downloading via web API](./saving-file-link.gif)
+
+## License
+
+Feel free to use the code in this repository as it is under MIT license.
+
+<a href='https://ko-fi.com/changhuixu' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi3.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
